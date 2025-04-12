@@ -1,39 +1,88 @@
 .sidebar {
-    background-color: #f9f8f4;
-    border-right: 4px solid #2D3142;
-    font-family: 'Arial Black', sans-serif;
-  }
-  
-  .sidebar.dark {
-    background-color: #2D3142;
-    color: #ffffff;
-  }
-  
-  .menuItem {
-    border: 2px solid #2D3142;
-    color: #2D3142;
-    background-color: #FFC857;
-    transition: all 0.2s;
-  }
-  
-  .menuItem:hover {
-    background-color: #FF6B35;
-    color: white;
-  }
-  
-  .activeMenuItem {
-    background-color: #3A7D44;
-    color: white;
-  }
-  
-  .sidebar.dark .menuItem {
-    background-color: #4f5d75;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-  }
-  
-  .sidebar.dark .activeMenuItem {
-    background-color: #FCA311;
-    color: black;
-  }
-  
+  background-color: #ffffff;
+  border-right: 4px solid #000;
+  font-family: 'Arial Black', sans-serif;
+  color: #000000;
+  transition: width 0.3s ease;
+  width: 20vw;
+}
+
+/* Khi sidebar collapsed, giảm chiều rộng */
+.sidebar.collapsed {
+  width: 80px; /* Hoặc điều chỉnh theo nhu cầu */
+}
+
+/* Dark mode */
+.sidebar.dark {
+  background-color: #111;
+  color: #ffffff;
+}
+
+.menuItem {
+  border: 2px solid #000;
+  background-color: #ffdd00;
+  color: #000;
+  padding: 12px;
+  text-transform: uppercase;
+  transition: none;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 0;
+}
+
+/* Hover hiệu ứng */
+.menuItem:hover {
+  background-color: #000;
+  color: #ffdd00;
+}
+
+.activeMenuItem {
+  background-color: #00c853;
+  color: #fff;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.sidebar.dark .menuItem {
+  background-color: #444;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.sidebar.dark .activeMenuItem {
+  background-color: #ffab00;
+  color: #000;
+}
+
+.logoutButton {
+  background-color: #d50000;
+  box-shadow: 4px 4px 0 #000;
+  border: 2px solid #000;
+  border-radius: 0;
+  color: #fff;
+}
+
+.logoutButton:hover {
+  background-color: #000;
+  color: #ff1744;
+}
+
+.themeToggle {
+  background-color: #ffeb3b;
+  color: #000;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 0;
+}
+
+/* Nút collapse/expand */
+.collapseToggle {
+  background-color: #007aff;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 0;
+}
+
+/* Đảm bảo các text bên trong được ẩn khi ở chế độ collapsed */
+.sidebar.collapsed .menuName {
+  display: none;
+}

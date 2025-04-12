@@ -1,82 +1,84 @@
-/* Tổng thể Navbar */
+/* Tổng thể Navbar theo phong cách Brutalism */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;        /* Nền trắng */
-    color: #121212;                   /* Text màu tối */
-    padding: 16px 32px;
-    border-bottom: 4px solid #00AEEF;  /* Accent đường viền dưới */
-    font-family: 'Courier New', Courier, monospace; /* Font chữ kiểu monospaced */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  
-  /* Left Section: Thương hiệu */
-  .navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  .brand-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0;
-  }
-  
-  /* Center Section: Thanh tìm kiếm */
-  .navbar-center {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .search-box {
-    display: flex;
-    align-items: center;
-    background-color: #f7f7f7;
-    border: 2px solid #00AEEF;
-    padding: 8px 12px;
-    border-radius: 0; /* Giữ góc vuông */
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .search-icon {
-    color: #00AEEF;
-    margin-right: 8px;
-  }
-  
-  .search-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #121212;
-    font-size: 1rem;
-    width: 100%;
-  }
-  
-  /* Right Section: Thông tin người dùng */
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  .icon {
-    color: #121212;
-    font-size: 1.5rem;
-  }
-  
-  .brand-avatar,
-  .user-avatar {
-    border: 2px solid #121212;
-    box-shadow: none;
-    border-radius: 0;  /* Giữ kiểu bo góc vuông */
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;       /* Nền trắng tinh */
+  color: #000000;                  /* Text đen */
+  padding: 16px 32px;
+  border-bottom: 4px solid #000;   /* Viền dưới đậm, không hoa mỹ */
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: 4px 4px 0 #000;        /* Shadow “hard-edge” */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Left Section: Thương hiệu */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* Center Section: Thanh tìm kiếm */
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #f7f7f7;
+  border: 2px solid #000;
+  padding: 8px 12px;
+  border-radius: 0;            /* Giữ góc vuông */
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 4px 4px 0 #000;   /* Shadow mạnh cho hiệu ứng brutal */
+}
+
+.search-icon {
+  color: #000;
+  margin-right: 8px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #000;
+  font-size: 1rem;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+/* Right Section: Thông tin người dùng */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon {
+  color: #000;
+  font-size: 1.5rem;
+}
+
+/* Cài đặt cho Avatar: Góc vuông, viền đậm */
+.brand-avatar,
+.user-avatar {
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 0;
+}

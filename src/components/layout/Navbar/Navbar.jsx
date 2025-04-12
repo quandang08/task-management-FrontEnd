@@ -14,7 +14,7 @@ const Navbar = () => {
           src="https://i.pravatar.cc/100" 
           alt="Logo" 
         />
-        <h1 className="brand-title">Amu Task Manager</h1>
+        <h1 className="brand-title">AMU TASK MANAGER</h1>
       </div>
 
       {/* Center Section: Search */}
@@ -23,7 +23,7 @@ const Navbar = () => {
           <Search className="search-icon" />
           <input 
             type="text" 
-            placeholder="Search tasks..." 
+            placeholder="SEARCH TASKS..." 
             className="search-input" 
           />
         </div>
