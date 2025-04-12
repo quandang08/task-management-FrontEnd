@@ -1,0 +1,39 @@
+.sidebar {
+    background-color: #f9f8f4;
+    border-right: 4px solid #2D3142;
+    font-family: 'Arial Black', sans-serif;
+  }
+  
+  .sidebar.dark {
+    background-color: #2D3142;
+    color: #ffffff;
+  }
+  
+  .menuItem {
+    border: 2px solid #2D3142;
+    color: #2D3142;
+    background-color: #FFC857;
+    transition: all 0.2s;
+  }
+  
+  .menuItem:hover {
+    background-color: #FF6B35;
+    color: white;
+  }
+  
+  .activeMenuItem {
+    background-color: #3A7D44;
+    color: white;
+  }
+  
+  .sidebar.dark .menuItem {
+    background-color: #4f5d75;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+  }
+  
+  .sidebar.dark .activeMenuItem {
+    background-color: #FCA311;
+    color: black;
+  }
+  
