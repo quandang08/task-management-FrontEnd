@@ -12,7 +12,45 @@ code{
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 }
 
+.card {
+  background-color: #fef8dc;
+  color: #333;
+  box-shadow: 4px 4px 0 #000;
+  padding: 16px 24px;
+  border: 2px solid #000;
+  border-radius: 0;
+  font-family: 'Arial Black', sans-serif;
+}
 
+.card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000;
+  transition: 0.2s ease-in-out;
+}
+
+.card.dark {
+  background-color: #2f2f2f;
+  color: #fff;
+  box-shadow: 4px 4px 0 #fff;
+  border: 2px solid #fff;
+}
+
+.techStack {
+  color: #000;
+  border: 2px solid #000;
+  padding: 4px 8px;
+  background-image: linear-gradient(135deg, #ffdd00, #ffc857);
+  text-transform: uppercase;
+  font-family: 'Arial Black', sans-serif;
+  box-shadow: 2px 2px 0 #000;
+  transition: all 0.2s ease-in-out;
+}
+
+.techStack:hover {
+  background-image: linear-gradient(135deg, #ffc857, #ffdd00);
+  color: #fff;
+  box-shadow: 4px 4px 0 #000;
+}
 
 @tailwind base;
 @tailwind components;

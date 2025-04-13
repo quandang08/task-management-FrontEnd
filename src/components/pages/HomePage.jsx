@@ -1,5 +1,6 @@
 import React from 'react'
 import Sidebar from '../layout/Sidebar/Sidebar'
+import TaskList from '../tasks/TaskList'
 
 const HomePage = () => {
   return (
@@ -8,8 +9,8 @@ const HomePage = () => {
             <Sidebar/>
         </div>
 
-        <div className="right-side-part">
-            
+        <div className="right-side-part w-full flex justify-center mb-10">
+            <TaskList/>
         </div>
     </div>
   )
