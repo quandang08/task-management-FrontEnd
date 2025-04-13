@@ -1,15 +1,28 @@
+/* Sidebar container */
 .sidebar {
   background-color: #ffffff;
   border-right: 4px solid #000;
   font-family: 'Arial Black', sans-serif;
   color: #000000;
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
   width: 20vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-/* Khi sidebar collapsed, giảm chiều rộng */
+/* Khi sidebar thu gọn */
 .sidebar.collapsed {
-  width: 80px; /* Hoặc điều chỉnh theo nhu cầu */
+  width: 80px;
+  /* Căn giữa nội dung nếu cần */
+  text-align: center;
 }
 
 /* Dark mode */
@@ -27,14 +40,18 @@
   transition: none;
   box-shadow: 4px 4px 0 #000;
   border-radius: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 
-/* Hover hiệu ứng */
+/* Hover hiệu ứng cho menuItem */
 .menuItem:hover {
   background-color: #000;
   color: #ffdd00;
 }
 
+/* Active Menu Item */
 .activeMenuItem {
   background-color: #00c853;
   color: #fff;
@@ -42,6 +59,7 @@
   box-shadow: 4px 4px 0 #000;
 }
 
+/* Menu Item dành cho dark mode */
 .sidebar.dark .menuItem {
   background-color: #444;
   color: #fff;
@@ -53,12 +71,14 @@
   color: #000;
 }
 
+/* Nút Logout */
 .logoutButton {
   background-color: #d50000;
   box-shadow: 4px 4px 0 #000;
   border: 2px solid #000;
   border-radius: 0;
   color: #fff;
+  transition: all 0.3s ease;
 }
 
 .logoutButton:hover {
@@ -66,23 +86,57 @@
   color: #ff1744;
 }
 
+/* Nút Theme Toggle */
 .themeToggle {
   background-color: #ffeb3b;
   color: #000;
   border: 2px solid #000;
   box-shadow: 4px 4px 0 #000;
   border-radius: 0;
+  transition: all 0.3s ease;
 }
 
-/* Nút collapse/expand */
+/* Nút Collapse/Expand */
 .collapseToggle {
   background-color: #007aff;
   border: 2px solid #000;
   box-shadow: 4px 4px 0 #000;
   border-radius: 0;
+  transition: all 0.3s ease;
 }
 
-/* Đảm bảo các text bên trong được ẩn khi ở chế độ collapsed */
+/* Ẩn text menu khi collapsed */
 .sidebar.collapsed .menuName {
   display: none;
+}
+
+/* Điều chỉnh menuItem khi sidebar collapsed */
+.sidebar.collapsed .menuItem {
+  padding: 8px;
+  justify-content: center; 
+  gap: 0;                  
+}
+
+/* Cũng điều chỉnh nút collapse khi collapsed */
+.sidebar.collapsed .collapseToggle {
+  padding: 8px;
+  justify-content: center;
+}
+
+/* Styling scrollbar cho Chrome, Safari, Edge */
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #fafafa;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border: 2px solid #fafafa;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }

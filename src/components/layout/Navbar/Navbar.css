@@ -3,10 +3,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;       /* Nền trắng tinh */
-  color: #000000;                  /* Text đen */
+  background-color: #ffffff;
+  color: #000000; 
   padding: 16px 32px;
-  border-bottom: 4px solid #000;   /* Viền dưới đậm, không hoa mỹ */
+  border-bottom: 4px solid #000;
   font-family: 'Courier New', Courier, monospace;
   box-shadow: 4px 4px 0 #000;        /* Shadow “hard-edge” */
   position: sticky;
@@ -42,10 +42,10 @@
   background-color: #f7f7f7;
   border: 2px solid #000;
   padding: 8px 12px;
-  border-radius: 0;            /* Giữ góc vuông */
+  border-radius: 0;
   width: 100%;
   max-width: 400px;
-  box-shadow: 4px 4px 0 #000;   /* Shadow mạnh cho hiệu ứng brutal */
+  box-shadow: 4px 4px 0 #000;
 }
 
 .search-icon {
@@ -63,7 +63,6 @@
   text-transform: uppercase;
 }
 
-/* Right Section: Thông tin người dùng */
 .navbar-right {
   display: flex;
   align-items: center;
@@ -75,7 +74,6 @@
   font-size: 1.5rem;
 }
 
-/* Cài đặt cho Avatar: Góc vuông, viền đậm */
 .brand-avatar,
 .user-avatar {
   border: 2px solid #000;

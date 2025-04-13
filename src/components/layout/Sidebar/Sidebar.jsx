@@ -67,7 +67,7 @@ const Sidebar = () => {
     <div
       className={`sidebar ${darkMode ? "dark" : "light"} ${
         collapsed ? "collapsed" : ""
-      } min-h-[100vh] p-4 flex flex-col justify-between`}
+      } flex flex-col justify-between`}
     >
       <div>
         {/* Avatar */}
