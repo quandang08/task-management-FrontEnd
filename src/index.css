@@ -1,11 +1,11 @@
 body{
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  color: white !important;
+  color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden !important;
-  width: 100vw !important;
+  overflow-x: hidden;
+  width: 100vw ;
 }
 
 code{
