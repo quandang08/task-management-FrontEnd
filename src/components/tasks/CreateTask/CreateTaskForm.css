@@ -1,0 +1,99 @@
+.createTaskModalBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    background-color: #ecf0f1;
+    border: 4px solid #34495e;
+    border-radius: 0;
+    box-shadow: 8px 8px 0px #34495e;
+    padding: 16px;
+  }
+  
+  .createTaskTitle {
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #34495e;
+    font-size: 1.25rem;
+  }
+
+  .createTaskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .createTaskField {
+    background-color: #fff;
+  }
+  
+  .createTaskField .MuiOutlinedInput-root {
+    border-radius: 0;
+  }
+  .createTaskField .MuiOutlinedInput-notchedOutline {
+    border: 2px solid #2980b9;
+  }
+  .createTaskField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #1abc9c;
+  }
+  .createTaskField .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #1abc9c;
+  }
+
+  .createTaskField .MuiInputLabel-outlined {
+    color: #34495e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+  }
+  
+  #task-tags .MuiOutlinedInput-notchedOutline {
+    border: 2px solid #2980b9;
+    border-radius: 0;
+  }
+  #task-tags:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #1abc9c;
+  }
+  #task-tags.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #1abc9c;
+  }
+  
+  .createTaskForm__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  .createTaskForm__actions .MuiButton-outlinedError {
+    border: 3px solid #34495e;
+    border-radius: 0;
+    color: #34495e;
+    background-color: #ecf0f1;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 4px 4px 0px #34495e;
+  }
+  .createTaskForm__actions .MuiButton-outlinedError:hover {
+    border: 3px solid #1abc9c;
+    background-color: #dff9fb;
+    box-shadow: 4px 4px 0px #1abc9c;
+  }
+
+    .createTaskForm__actions .MuiButton-contained {
+    border-radius: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: 3px solid #34495e;
+    background-color: #34495e;
+    color: #fff;
+    box-shadow: 4px 4px 0px #34495e;
+  }
+  .createTaskForm__actions .MuiButton-contained:hover {
+    background-color: #1abc9c;
+    border-color: #1abc9c;
+    box-shadow: 4px 4px 0px #1abc9c;
+  }
+  
