@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import Navbar from './components/layout/Navbar/Navbar'
+import Auth from './components/pages/Auth/Auth'
 import HomePage from './components/pages/HomePage'
 import darkTheme from './theme/darkTheme'
 import lightTheme from './theme/lightTheme'
@@ -10,8 +11,10 @@ function App() {
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
-      <Navbar/>
-      <HomePage/>
+      {/* <Navbar/>
+      <HomePage/> */}
+
+      <Auth/>
     </ThemeProvider>
   )
 }
