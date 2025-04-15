@@ -11,7 +11,7 @@ import {
   DarkMode,
 } from "@mui/icons-material";
 import "./Sidebar.css";
-
+import CreateTaskForm from "../../tasks/CreateTask/CreateTaskForm";
 const menu = [
   {
     name: "HomePage",
@@ -57,76 +57,91 @@ const Sidebar = () => {
   const [activeMenu, setActiveMenu] = useState("HomePage");
   const [darkMode, setDarkMode] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [openCreateTaskForm, setOpenCreateTaskForm] = useState(false);
 
   const toggleTheme = () => setDarkMode(!darkMode);
   const toggleCollapse = () => setCollapsed(!collapsed);
-  const handleMenuChange = (item) => setActiveMenu(item.value);
+
+  const handleMenuChange = (item) => {
+    if (item.name === "Create New Task") {
+      setOpenCreateTaskForm(true);
+    }
+    setActiveMenu(item.value);
+  };
+
+  const handleCloseCreateTaskForm = () => {
+    setOpenCreateTaskForm(false);
+  };
+
   const handleLogout = () => console.log("handle logout");
 
   return (
-    <div
-      className={`sidebar ${darkMode ? "dark" : "light"} ${
-        collapsed ? "collapsed" : ""
-      } flex flex-col justify-between`}
-    >
-      <div>
-        {/* Avatar */}
-        <div className="flex justify-center">
-          <Avatar
-            sx={{
-              width: collapsed ? "4rem" : "8rem",
-              height: collapsed ? "4rem" : "8rem",
-            }}
-            className="brand-avatar"
-            src="https://i.pravatar.cc/300"
-          />
-        </div>
-
-        {/* Menu Items */}
-        <div className="flex flex-col gap-3 mt-8">
-          {menu
-            .filter((item) => item.role.includes(role))
-            .map((item) => (
-              <div
-                key={item.value}
-                onClick={() => handleMenuChange(item)}
-                className={`menuItem flex items-center gap-3 px-4 py-3 cursor-pointer font-bold ${
-                  activeMenu === item.value ? "activeMenuItem" : ""
-                }`}
-              >
-                {item.icon}
-                {/* Ẩn tên menu khi đang ở chế độ collapsed */}
-                {!collapsed && <span className="menuName">{item.name}</span>}
+    <>
+      <div
+        className={`sidebar ${darkMode ? "dark" : "light"} ${
+          collapsed ? "collapsed" : ""
+        } flex flex-col justify-between`}
+      >
+        <div>
+          <div className="flex justify-center mt-6 mb-6">
+            {!collapsed && (
+              <div className="text-2xl font-black uppercase tracking-wide text-center">
+                Task Manager Amu
               </div>
-            ))}
+            )}
+          </div>
+
+          {/* Menu Items */}
+          <div className="flex flex-col gap-3 mt-8">
+            {menu
+              .filter((item) => item.role.includes(role))
+              .map((item) => (
+                <div
+                  key={item.value}
+                  onClick={() => handleMenuChange(item)}
+                  className={`menuItem flex items-center gap-3 px-4 py-3 cursor-pointer font-bold ${
+                    activeMenu === item.value ? "activeMenuItem" : ""
+                  }`}
+                >
+                  {item.icon}
+                  {/* Ẩn tên menu khi đang ở chế độ collapsed */}
+                  {!collapsed && <span className="menuName">{item.name}</span>}
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* Bottom Area */}
+        <div className="flex flex-col gap-4 mt-8">
+          <button
+            onClick={toggleTheme}
+            className="themeToggle flex items-center justify-center gap-2 py-2 font-bold hover:scale-105 transition"
+          >
+            {darkMode ? <LightMode /> : <DarkMode />}{" "}
+            {!collapsed && (darkMode ? "Light" : "Dark")}
+          </button>
+
+          <button
+            onClick={toggleCollapse}
+            className="collapseToggle flex items-center justify-center gap-2 py-2 font-bold bg-blue-500 text-white hover:scale-105 transition"
+          >
+            {collapsed ? "Expand" : "Collapse"}
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="logoutButton py-2 hover:scale-105 transition"
+          >
+            {!collapsed ? "Logout" : <span className="sr-only">Logout</span>}
+          </button>
         </div>
       </div>
 
-      {/* Bottom Area */}
-      <div className="flex flex-col gap-4 mt-8">
-        <button
-          onClick={toggleTheme}
-          className="themeToggle flex items-center justify-center gap-2 py-2 font-bold hover:scale-105 transition"
-        >
-          {darkMode ? <LightMode /> : <DarkMode />}{" "}
-          {!collapsed && (darkMode ? "Light" : "Dark")}
-        </button>
-
-        <button
-          onClick={toggleCollapse}
-          className="collapseToggle flex items-center justify-center gap-2 py-2 font-bold bg-blue-500 text-white hover:scale-105 transition"
-        >
-          {collapsed ? "Expand" : "Collapse"}
-        </button>
-
-        <button
-          onClick={handleLogout}
-          className="logoutButton py-2 hover:scale-105 transition"
-        >
-          {!collapsed ? "Logout" : <span className="sr-only">Logout</span>}
-        </button>
-      </div>
-    </div>
+      <CreateTaskForm
+        open={openCreateTaskForm}
+        handleClose={handleCloseCreateTaskForm}
+      />
+    </>
   );
 };
 

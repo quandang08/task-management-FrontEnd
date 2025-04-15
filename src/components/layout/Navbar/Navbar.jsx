@@ -8,12 +8,6 @@ const Navbar = () => {
     <nav className="navbar">
       {/* Left Section: Brand */}
       <div className="navbar-left">
-        <Avatar 
-          className="brand-avatar"
-          sx={{ width: 48, height: 48 }} 
-          src="https://i.pravatar.cc/100" 
-          alt="Logo" 
-        />
         <h1 className="brand-title">AMU TASK MANAGER</h1>
       </div>
 
