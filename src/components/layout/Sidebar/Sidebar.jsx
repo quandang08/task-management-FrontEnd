@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar } from "@mui/material";
 import {
   Home,
@@ -12,6 +12,8 @@ import {
 } from "@mui/icons-material";
 import "./Sidebar.css";
 import CreateTaskForm from "../../tasks/CreateTask/CreateTaskForm";
+import { useLocation, useNavigate } from "react-router-dom";
+
 const menu = [
   {
     name: "HomePage",
@@ -51,21 +53,41 @@ const menu = [
   },
 ];
 
-const role = "ROLE_ADMIN";
+const role = "ROLE_ADMIN"; // Thường sẽ truyền từ context hoặc props
 
 const Sidebar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [activeMenu, setActiveMenu] = useState("HomePage");
   const [darkMode, setDarkMode] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [openCreateTaskForm, setOpenCreateTaskForm] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const filter = params.get("filter") || "HomePage";
+    setActiveMenu(filter);
+  }, [location.search]);
+
   const toggleTheme = () => setDarkMode(!darkMode);
   const toggleCollapse = () => setCollapsed(!collapsed);
 
   const handleMenuChange = (item) => {
+    if (activeMenu === item.value) return; // Ngừng điều hướng nếu đã ở menu đó
+
+    const updatedParams = new URLSearchParams(location.search);
+
     if (item.name === "Create New Task") {
       setOpenCreateTaskForm(true);
+    } else if (item.value === "HomePage") {
+      updatedParams.delete("filter"); // Xóa filter khi chọn HomePage
+      navigate(`${location.pathname}?${updatedParams.toString()}`);
+    } else {
+      updatedParams.set("filter", item.value);
+      navigate(`${location.pathname}?${updatedParams.toString()}`);
     }
+
     setActiveMenu(item.value);
   };
 

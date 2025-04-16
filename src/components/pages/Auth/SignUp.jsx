@@ -86,7 +86,7 @@ const SignUp = () => {
           onChange={handleChange}
           className="styled-select"
         >
-          <option value="ROLE_USER">ROLE_USER</option>
+          <option value="ROLE_CUSTOMER">ROLE_USER</option>
           <option value="ROLE_ADMIN">ROLE_ADMIN</option>
         </select>
       </div>

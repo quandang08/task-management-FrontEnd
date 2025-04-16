@@ -5,21 +5,21 @@ const lightTheme = createTheme({
     mode: 'light',
 
     background: {
-      default: '#f0f2f5',     // Xám nhạt pha chút xanh - nền dịu
-      paper: '#ffffff',       // Card / Paper vẫn trắng để tạo lớp nổi bật
+      default: '#f0f2f5',
+      paper: '#ffffff',
     },
 
     text: {
-      primary: '#1c1c1e',     // Đen nhẹ, không quá tương phản
-      secondary: '#4d4d4f',   // Xám tro dịu
+      primary: '#1c1c1e',
+      secondary: '#4d4d4f',
     },
 
     primary: {
-      main: '#5c6ac4',        // Xanh tím nhạt, dễ chịu (Polaris vibe)
+      main: '#5c6ac4',
     },
 
     secondary: {
-      main: '#f472b6',        // Hồng pastel nhẹ
+      main: '#f472b6',
     },
   },
 
