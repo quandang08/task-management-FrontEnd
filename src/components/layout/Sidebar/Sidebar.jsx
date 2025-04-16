@@ -53,7 +53,7 @@ const menu = [
   },
 ];
 
-const role = "ROLE_ADMIN"; // Thường sẽ truyền từ context hoặc props
+const role = "ROLE_ADMIN";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -74,14 +74,14 @@ const Sidebar = () => {
   const toggleCollapse = () => setCollapsed(!collapsed);
 
   const handleMenuChange = (item) => {
-    if (activeMenu === item.value) return; // Ngừng điều hướng nếu đã ở menu đó
+    if (activeMenu === item.value) return;
 
     const updatedParams = new URLSearchParams(location.search);
 
     if (item.name === "Create New Task") {
       setOpenCreateTaskForm(true);
     } else if (item.value === "HomePage") {
-      updatedParams.delete("filter"); // Xóa filter khi chọn HomePage
+      updatedParams.delete("filter");
       navigate(`${location.pathname}?${updatedParams.toString()}`);
     } else {
       updatedParams.set("filter", item.value);
@@ -126,7 +126,7 @@ const Sidebar = () => {
                   }`}
                 >
                   {item.icon}
-                  {/* Ẩn tên menu khi đang ở chế độ collapsed */}
+
                   {!collapsed && <span className="menuName">{item.name}</span>}
                 </div>
               ))}
