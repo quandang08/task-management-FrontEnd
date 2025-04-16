@@ -21,8 +21,8 @@
   /* Left section: Image */
   .auth-image {
     flex: 1;
-    background: url('https://via.placeholder.com/600x800') no-repeat center center/cover;
-  }
+    background: url('https://i.pinimg.com/736x/80/4d/79/804d79d90c93ac175153812460a9c50d.jpg') no-repeat center center/cover;
+  }  
   
   /* Right section: Form */
   .auth-form {
@@ -153,5 +153,16 @@
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  
+  .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
   

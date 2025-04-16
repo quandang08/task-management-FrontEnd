@@ -12,7 +12,6 @@ const Auth = () => {
     <div className="auth-container">
       <div className="auth-wrapper">
         <div className="auth-image">
-          <img src="https://i.pinimg.com/736x/80/4d/79/804d79d90c93ac175153812460a9c50d.jpg" alt="" />
         </div>
 
         <div className="auth-form">
