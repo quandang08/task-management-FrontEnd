@@ -2,8 +2,11 @@ import React from 'react';
 import { Avatar } from '@mui/material';
 import { Search, Notifications, ArrowDropDown } from '@mui/icons-material';
 import "./Navbar.css";
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
+  const {task, auth} = useSelector(store=>store);
+
   return (
     <nav className="navbar">
       {/* Left Section: Brand */}
@@ -26,6 +29,7 @@ const Navbar = () => {
       {/* Right Section: User Info */}
       <div className="navbar-right">
         <Notifications className="icon" />
+        <p>{auth.user?.fullName || "Admin"}</p>
         <Avatar 
           className="user-avatar"
           sx={{ width: 40, height: 40 }} 

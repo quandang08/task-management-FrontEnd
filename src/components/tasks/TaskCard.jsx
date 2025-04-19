@@ -7,11 +7,9 @@ import EditTaskForm from "./EditTaskForm";
 
 const role = "ROLE_ADMIN";
 
-const TaskCard = () => {
+const TaskCard = ({ task }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  
-  
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,14 +43,13 @@ const TaskCard = () => {
   const [openUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
   const handleCloseUpdateTaskForm = () => {
     setOpenUpdateTaskForm(false);
-  }
+  };
   const handleOpenUpdateTaskModel = () => {
     setOpenUpdateTaskForm(true);
     handleMenuClose();
   };
 
   const handleDeleteTask = () => {
-
     handleMenuClose();
   };
 
@@ -63,23 +60,21 @@ const TaskCard = () => {
           <div className="">
             <img
               className="lg:w-[7rem] lg:h-[7rem] object-cover rounded-lg shadow-lg"
-              src="/BMW-735i-Msport.jpg"
-              alt="BMW-735i-Msport"
+              src={task.image}
+              alt="image"
             />
           </div>
 
           <div className="space-y-5">
             <div className="space-y-2">
-              <h1 className="font-bold text-lg">Car Rental Website</h1>
-              <p className="text-gray-500 text-sm">
-                use latest frameworks and technology to make this website
-              </p>
+              <h1 className="font-bold text-lg">{task.title}</h1>
+              <p className="text-gray-500 text-sm">{task.description}</p>
             </div>
 
             <div className="flex flex-wrap gap-2 items-center">
-              {[1, 1, 1, 1].map((item, index) => (
+              {task.tags.map((item, index) => (
                 <span key={index} className="py-1 px-5 rounded-full techStack">
-                  Angular
+                  {item}
                 </span>
               ))}
             </div>
@@ -111,18 +106,25 @@ const TaskCard = () => {
               horizontal: "left",
             }}
           >
-            {role === "ROLE_ADMIN" ? (
-              <>
-                <MenuItem onClick={handleOpenUserList}>Assigned User</MenuItem>
-                <MenuItem onClick={handleOpenSubmissionList}>
-                  See Submissions
-                </MenuItem>
-                <MenuItem onClick={handleOpenUpdateTaskModel}>Edit</MenuItem>
-                <MenuItem onClick={handleDeleteTask}>Delete</MenuItem>
-              </>
-            ) : (
-              <></>
-            )}
+            {role === "ROLE_ADMIN"
+              ? [
+                  <MenuItem key="user" onClick={handleOpenUserList}>
+                    Assigned User
+                  </MenuItem>,
+                  <MenuItem
+                    key="submissions"
+                    onClick={handleOpenSubmissionList}
+                  >
+                    See Submissions
+                  </MenuItem>,
+                  <MenuItem key="edit" onClick={handleOpenUpdateTaskModel}>
+                    Edit
+                  </MenuItem>,
+                  <MenuItem key="delete" onClick={handleDeleteTask}>
+                    Delete
+                  </MenuItem>,
+                ]
+              : null}
           </Menu>
         </div>
       </div>
@@ -131,7 +133,10 @@ const TaskCard = () => {
         open={openSubmissionList}
         handleClose={handleCloseSubmissionList}
       />
-      <EditTaskForm open={openUpdateTaskForm} handleClose={handleCloseUpdateTaskForm} />
+      <EditTaskForm
+        open={openUpdateTaskForm}
+        handleClose={handleCloseUpdateTaskForm}
+      />
     </div>
   );
 };

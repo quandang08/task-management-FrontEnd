@@ -74,22 +74,25 @@ const Sidebar = () => {
   const toggleCollapse = () => setCollapsed(!collapsed);
 
   const handleMenuChange = (item) => {
-    if (activeMenu === item.value) return;
-
-    const updatedParams = new URLSearchParams(location.search);
-
     if (item.name === "Create New Task") {
       setOpenCreateTaskForm(true);
-    } else if (item.value === "HomePage") {
+      return;
+    }
+    if (activeMenu === item.value) return;
+  
+    const updatedParams = new URLSearchParams(location.search);
+  
+    if (item.value === "HomePage") {
       updatedParams.delete("filter");
       navigate(`${location.pathname}?${updatedParams.toString()}`);
     } else {
       updatedParams.set("filter", item.value);
       navigate(`${location.pathname}?${updatedParams.toString()}`);
     }
-
+  
     setActiveMenu(item.value);
   };
+  
 
   const handleCloseCreateTaskForm = () => {
     setOpenCreateTaskForm(false);
