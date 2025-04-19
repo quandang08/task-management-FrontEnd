@@ -12,8 +12,12 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState } from "react";
 import "./CreateTaskForm.css";
+import { useDispatch } from "react-redux";
+import { createTask } from "../../../features/task/TaskThunk";
 
 export default function CreateTaskForm({ handleClose, open }) {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -49,13 +53,10 @@ export default function CreateTaskForm({ handleClose, open }) {
 
     const payload = {
       ...formData,
-      deadline: formData.deadline.toISOString(), // đảm bảo BE nhận đúng định dạng ISO
+      deadline: formData.deadline.toISOString(), 
     };
-
     console.log("Payload gửi lên:", payload);
-
-    // Gửi API ở đây
-
+    dispatch(createTask(formData));
     handleClose();
   };
 
