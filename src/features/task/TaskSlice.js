@@ -9,15 +9,15 @@ import {
   assignTaskToUser,
   completeTask,
   updateTaskStatus,
-} from "./taskThunks";
+} from "./TaskThunk";
 
 const initialState = {
   tasks: [],               // Danh sách task
-  selectedTask: null,      // Chi tiết task khi xem hoặc sửa
+  taskDetails: null,       // Chi tiết task khi xem hoặc sửa
   loading: false,          // Loading chung cho mọi hành động
   error: null,             // Lỗi chung
   successMessage: null,    // Thông báo thành công
-  usersTask: [],          // Danh sách task của user
+  usersTask: [],           // Danh sách task của user
 };
 
 const taskSlice = createSlice({
