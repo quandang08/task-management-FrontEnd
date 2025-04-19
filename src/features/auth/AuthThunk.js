@@ -1,55 +1,64 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, setAuthHeader } from "../../api/api";
+import { BASE_URL } from "../../api/api";
+import axios from "axios";
 
-export const login = createAsyncThunk("auth/login", async (userData, { rejectWithValue }) => {
+// LOGIN
+export const login = createAsyncThunk("auth/login", async (userData) => {
   try {
-    const { data } = await api.post(`/auth/singin`, userData);
-    localStorage.setItem("jwt", data.jwt);
+    const { data } = await axios.post(`${BASE_URL}/auth/signin`, userData);
+    localStorage.setItem("jwt", data.jwt); // Lưu JWT vào localStorage
     return data;
   } catch (error) {
-    return rejectWithValue(error.response?.data?.error || "Login failed");
+    console.error("Login error:", error);
+    throw new Error(error.response?.data?.error || "Đăng nhập không thành công.");
   }
 });
 
-export const register = createAsyncThunk("auth/register", async (userData, { rejectWithValue }) => {
+// REGISTER
+export const register = createAsyncThunk("auth/register", async (userData) => {
   try {
-    const { data } = await api.post(`/auth/singup`, userData);
-    localStorage.setItem("jwt", data.jwt);
-    return data;
+    const { data } = await axios.post(`${BASE_URL}/auth/signup`, userData);
+    return {
+      message: "Đăng ký thành công. Vui lòng đăng nhập",
+      user: data.user,
+    };
   } catch (error) {
-    return rejectWithValue(error.response?.data?.error || "Register failed");
+    console.error("Register error:", error);
+    throw new Error(error.response?.data?.error || "Đăng ký không thành công.");
   }
 });
 
+// LOGOUT
 export const logout = createAsyncThunk("auth/logout", async () => {
-  localStorage.removeItem('jwt');
-  return { message: "Logged out" };
+  try {
+    localStorage.removeItem("jwt"); // Xóa JWT khỏi localStorage
+  } catch (error) {
+    console.error("Logout error:", error);
+    throw new Error("Lỗi khi đăng xuất.");
+  }
 });
 
-export const getUserProfile = createAsyncThunk(
-  "auth/getUserProfile",
-  async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem("jwt");
-    setAuthHeader(token, api);
-    try {
-      const { data } = await api.get(`/api/users/profile`);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.error || "Get profile failed");
-    }
+// GET USER PROFILE
+export const getUserProfile = createAsyncThunk("auth/getUserProfile", async (jwt) => {
+  setAuthHeader(jwt, api); // Thiết lập header với JWT
+  try {
+    const { data } = await api.get("/api/users/profile");
+    return data;
+  } catch (error) {
+    console.error("Get user profile error:", error);
+    throw new Error(error.response?.data?.error || "Lỗi khi lấy thông tin người dùng.");
   }
-);
+});
 
-export const getUserList = createAsyncThunk(
-  "auth/getUserList",
-  async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem("jwt");
-    setAuthHeader(token, api);
-    try {
-      const { data } = await api.get(`/api/users`);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.error || "Get user list failed");
-    }
+// GET USER LIST
+export const getUserList = createAsyncThunk("auth/getUserList", async (jwt) => {
+  setAuthHeader(jwt, api); // Thiết lập header với JWT
+  try {
+    const { data } = await api.get("/api/users");
+    return data;
+  } catch (error) {
+    console.error("Get user list error:", error);
+    throw new Error(error.response?.data?.error || "Lỗi khi lấy danh sách người dùng.");
   }
-);
+});

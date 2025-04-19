@@ -1,18 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  login,
-  register,
-  logout,
-  getUserProfile,
-  getUserList,
-} from "./AuthThunk";
+import { login, register, logout, getUserProfile, getUserList } from "./AuthThunk";
 
 const initialState = {
   user: null,
   loggedIn: false,
   loading: false,
   error: null,
-  jwt: localStorage.getItem("jwt") || null,
+  jwt: null,
   users: [],
 };
 
@@ -34,7 +28,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.error.message;
       })
 
       // REGISTER
@@ -42,10 +36,8 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
         state.loading = false;
-        state.jwt = action.payload.jwt;
-        state.loggedIn = true;
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -87,8 +79,34 @@ const authSlice = createSlice({
         state.jwt = null;
         state.loggedIn = false;
         state.users = [];
-      });
+        localStorage.removeItem("jwt");
+      })
+
+      // Handle pending and rejected actions
+      .addMatcher(
+        (action) => action.type.endsWith('/pending'),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith('/rejected'),
+        (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+
+          // Handle unauthorized or invalid token errors
+          if (action.payload === "Invalid token" || action.payload === "Unauthorized") {
+            state.user = null;
+            state.jwt = null;
+            state.loggedIn = false;
+            localStorage.removeItem("jwt");
+          }
+        }
+      );
   },
 });
 
+export const { clearError } = authSlice.actions;
 export default authSlice.reducer;
