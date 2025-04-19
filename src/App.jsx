@@ -1,27 +1,41 @@
 // @ts-nocheck
-
-import { useState } from 'react'
-import Navbar from './components/layout/Navbar/Navbar'
-import Auth from './components/pages/Auth/Auth'
-import HomePage from './components/pages/HomePage'
-import darkTheme from './theme/darkTheme'
-import lightTheme from './theme/lightTheme'
-import { ThemeProvider, CssBaseline } from '@mui/material'
+import { useEffect } from "react";
+import Navbar from "./components/layout/Navbar/Navbar";
+import Auth from "./components/pages/Auth/Auth";
+import HomePage from "./components/pages/HomePage";
+import darkTheme from "./theme/darkTheme";
+import lightTheme from "./theme/lightTheme";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTasks } from "./features/task/TaskThunk";
+import { getUserProfile } from "./features/auth/AuthThunk";
 
 function App() {
-  const [user, setUser] = useState(true);
+  const dispatch = useDispatch();
+
+  const jwt = useSelector((state) => state.auth.jwt);
+  const userProfile = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (jwt || localStorage.getItem("jwt")) {
+      dispatch(getUserProfile(jwt || localStorage.getItem("jwt")));
+    }
+    dispatch(fetchTasks({}));
+  }, [dispatch, jwt]);
 
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
-      
-      {user? <div>
-        <Navbar/>
-      <HomePage/>
-      </div> : <Auth/>}
-      
+      {userProfile ? (
+        <div>
+          <Navbar />
+          <HomePage />
+        </div>
+      ) : (
+        <Auth />
+      )}
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
