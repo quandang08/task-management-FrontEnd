@@ -12,7 +12,10 @@ import {
 } from "@mui/icons-material";
 import "./Sidebar.css";
 import CreateTaskForm from "../../tasks/CreateTask/CreateTaskForm";
+
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../features/auth/AuthThunk";
 
 const menu = [
   {
@@ -58,6 +61,8 @@ const role = "ROLE_ADMIN";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const [activeMenu, setActiveMenu] = useState("HomePage");
   const [darkMode, setDarkMode] = useState(false);
@@ -98,7 +103,17 @@ const Sidebar = () => {
     setOpenCreateTaskForm(false);
   };
 
-  const handleLogout = () => console.log("handle logout");
+  const handleLogout = async () => {
+    const confirm = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
+    if (!confirm) return;
+  
+    try {
+      await dispatch(logout());
+      navigate("/auth");
+    } catch (error) {
+      console.error("Đăng xuất thất bại:", error);
+    }
+  };
 
   return (
     <>
