@@ -72,7 +72,7 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTaskById.fulfilled, (state, action) => {
         state.loading = false;
-        state.selectedTask = action.payload || null;
+        state.taskDetails = action.payload || null;
       })
       .addCase(fetchTaskById.rejected, (state, action) => {
         state.loading = false;
@@ -107,7 +107,7 @@ const taskSlice = createSlice({
         state.tasks = state.tasks.map((t) =>
           t.id === action.payload.id ? action.payload : t
         );
-        state.selectedTask = action.payload;
+        state.taskDetails = action.payload;
         state.successMessage = "Cập nhật task thành công";
       })
       .addCase(updateTask.rejected, (state, action) => {

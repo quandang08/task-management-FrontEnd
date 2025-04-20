@@ -11,9 +11,15 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState, useEffect } from "react";
-import "./CreateTask/CreateTaskForm.css"; // dùng chung style
+import "./CreateTask/CreateTaskForm.css";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTask } from "../../features/task/TaskThunk";
+import { toast } from "react-toastify";
 
 export default function EditTaskForm({ open, handleClose, initialData }) {
+  const dispatch = useDispatch();
+  const { task } = useSelector((store) => store);
+
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -22,7 +28,6 @@ export default function EditTaskForm({ open, handleClose, initialData }) {
     deadline: new Date(),
   });
 
-  // Cập nhật dữ liệu mỗi khi mở modal hoặc initialData thay đổi
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -30,10 +35,42 @@ export default function EditTaskForm({ open, handleClose, initialData }) {
         image: initialData.image || "",
         description: initialData.description || "",
         tags: initialData.tags || [],
-        deadline: initialData.deadline ? new Date(initialData.deadline) : new Date(),
+        deadline: initialData.deadline
+          ? new Date(initialData.deadline)
+          : new Date(),
       });
     }
   }, [initialData]);
+
+  useEffect(() => {
+    if (task.taskDetails) {
+      setFormData({
+        ...task.taskDetails,
+        deadline: new Date(task.taskDetails.deadline),
+      });
+    }
+  }, [task.taskDetails]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      ...formData,
+      deadline: formData.deadline.toISOString(),
+    };
+
+    try {
+      await dispatch(
+        updateTask({ taskId: initialData.id, taskData: payload })
+      ).unwrap();
+      toast.success("Task updated successfully!");
+      handleClose();
+    } catch (error) {
+      console.error("Update task failed: ", error);
+      toast.error(error.message || "Failed to update task!");
+    }
+  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,21 +92,6 @@ export default function EditTaskForm({ open, handleClose, initialData }) {
       ...prev,
       deadline: date,
     }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const payload = {
-      ...formData,
-      deadline: formData.deadline.toISOString(),
-    };
-
-    console.log("Payload cập nhật:", payload);
-
-    // Gửi API update ở đây
-
-    handleClose();
   };
 
   return (
@@ -124,7 +146,13 @@ export default function EditTaskForm({ open, handleClose, initialData }) {
               <Autocomplete
                 multiple
                 id="task-tags"
-                options={["Urgent", "Bug", "Feature", "Low Priority", "Improvement"]}
+                options={[
+                  "Urgent",
+                  "Bug",
+                  "Feature",
+                  "Low Priority",
+                  "Improvement",
+                ]}
                 value={formData.tags}
                 onChange={handleTagChange}
                 getOptionLabel={(option) => option}

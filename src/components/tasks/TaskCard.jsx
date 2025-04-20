@@ -6,8 +6,8 @@ import SubmissionsList from "./SubmissionList";
 import EditTaskForm from "./EditTaskForm";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "../../features/task/TaskThunk";
-import {toast} from 'react-toastify';
 import { showNotification } from "../../features/notification/NotificationSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const role = "ROLE_ADMIN";
 
@@ -15,6 +15,8 @@ const TaskCard = ({ task }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,9 +50,19 @@ const TaskCard = ({ task }) => {
   const [openUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
   const handleCloseUpdateTaskForm = () => {
     setOpenUpdateTaskForm(false);
+  
+    const updatedParams = new URLSearchParams(location.search);
+    updatedParams.delete("taskId");
+  
+    navigate(`${location.pathname}?${updatedParams.toString()}`);
   };
+  
   const handleOpenUpdateTaskModel = () => {
+    const updatedParams = new URLSearchParams(location.search);
+
     setOpenUpdateTaskForm(true);
+    updatedParams.set("taskId", task.id);
+    navigate(`${location.pathname}?${updatedParams.toString()}`);
     handleMenuClose();
   };
 
@@ -128,10 +140,10 @@ const TaskCard = ({ task }) => {
                   >
                     See Submissions
                   </MenuItem>,
-                  <MenuItem key="edit" onClick={handleOpenUpdateTaskModel}>
+                  <MenuItem key="edit" onClick={handleOpenUpdateTaskModel}  >
                     Edit
                   </MenuItem>,
-                  <MenuItem key="delete" onClick={handleDeleteTask}>
+                  <MenuItem key="delete" onClick={handleDeleteTask} >
                     Delete
                   </MenuItem>,
                 ]
@@ -147,6 +159,7 @@ const TaskCard = ({ task }) => {
       <EditTaskForm
         open={openUpdateTaskForm}
         handleClose={handleCloseUpdateTaskForm}
+        initialData={task}
       />
     </div>
   );

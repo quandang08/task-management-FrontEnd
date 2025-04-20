@@ -1,11 +1,11 @@
-import React from 'react';
-import { Avatar } from '@mui/material';
-import { Search, Notifications, ArrowDropDown } from '@mui/icons-material';
+import React from "react";
+import { Avatar } from "@mui/material";
+import { Search, Notifications, ArrowDropDown } from "@mui/icons-material";
 import "./Navbar.css";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const {task, auth} = useSelector(store=>store);
+  const { task, auth } = useSelector((store) => store);
 
   return (
     <nav className="navbar">
@@ -18,10 +18,10 @@ const Navbar = () => {
       <div className="navbar-center">
         <div className="search-box">
           <Search className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="SEARCH TASKS..." 
-            className="search-input" 
+          <input
+            type="text"
+            placeholder="SEARCH TASKS..."
+            className="search-input"
           />
         </div>
       </div>
@@ -29,12 +29,16 @@ const Navbar = () => {
       {/* Right Section: User Info */}
       <div className="navbar-right">
         <Notifications className="icon" />
-        <p>{auth.user?.fullName || "Admin"}</p>
-        <Avatar 
+        <p>
+          {auth.user?.role === "ROLE_ADMIN"
+            ? "Admin"
+            : auth.user?.fullName || "User"}
+        </p>
+        <Avatar
           className="user-avatar"
-          sx={{ width: 40, height: 40 }} 
-          src="https://i.pravatar.cc/80" 
-          alt="User" 
+          sx={{ width: 40, height: 40 }}
+          src="https://i.pravatar.cc/80"
+          alt="User"
         />
         <ArrowDropDown className="icon" />
       </div>
