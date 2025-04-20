@@ -11,7 +11,6 @@ export const fetchTasks = createAsyncThunk("task/fetchTasks", async ({ status })
         params: { status }
       });
   
-      console.log("fetch tasks: ", data);
       return data;
     } catch (error) {
       console.log("error ", error);
@@ -41,8 +40,8 @@ export const fetchTaskById = createAsyncThunk("task/fetchTaskById", async ({ tas
 
     try {
         const { data } = await api.get(`/api/tasks/${taskId}`);
-        console.log("fetch task: ", data);
         return data;
+
     } catch (error) {
         console.log("error ", error);
         throw Error(error?.response?.data?.error || "An error occurred");
