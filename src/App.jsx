@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTasks } from "./features/task/TaskThunk";
 import { getUserProfile } from "./features/auth/AuthThunk";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -34,6 +37,8 @@ function App() {
       ) : (
         <Auth />
       )}
+      
+      <ToastContainer position="top-right" autoClose={3000} />
     </ThemeProvider>
   );
 }

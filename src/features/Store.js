@@ -3,11 +3,13 @@ import {thunk} from "redux-thunk";
 import authReducer from "./auth/AuthSlice";
 import taskReducer  from "./task/TaskSlice";
 import submissionReducer from "./submission/SubmissionSlice";
+import notificationReducer from "./notification/NotificationSlice";
 
 const rootReducer = combineReducers({
     auth:authReducer,
     task:taskReducer,
-    submission:submissionReducer
+    submission:submissionReducer,
+    notification: notificationReducer,
 })
 
 const store = configureStore({

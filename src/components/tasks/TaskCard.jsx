@@ -4,12 +4,17 @@ import React, { useState } from "react";
 import UserList from "../user/UserList";
 import SubmissionsList from "./SubmissionList";
 import EditTaskForm from "./EditTaskForm";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../features/task/TaskThunk";
+import {toast} from 'react-toastify';
+import { showNotification } from "../../features/notification/NotificationSlice";
 
 const role = "ROLE_ADMIN";
 
 const TaskCard = ({ task }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,8 +55,14 @@ const TaskCard = ({ task }) => {
   };
 
   const handleDeleteTask = () => {
+    const confirmed = window.confirm("Are you sure you want to delete this task?");
+    if (!confirmed) return;
+  
+    dispatch(deleteTask(task.id));
+    dispatch(showNotification({ message: "Task deleted successfully!", type: "success" }));
     handleMenuClose();
   };
+  
 
   return (
     <div className="">

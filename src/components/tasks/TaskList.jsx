@@ -18,6 +18,8 @@ const TaskList = () => {
     } else {
       dispatch(fetchUsersTasks({ status: filterValue }));
     }
+
+    console.log("Filter value:", filterValue);
   }, [filterValue, dispatch, user]);
 
   if (loading) {

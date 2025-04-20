@@ -5,23 +5,19 @@ import { api, setAuthHeader } from "../../api/api";
 // Fetch tasks
 export const fetchTasks = createAsyncThunk("task/fetchTasks", async ({ status }) => {
     setAuthHeader(localStorage.getItem("jwt"), api);
-
+  
     try {
-        const { data } = await api.get("/api/tasks", {
-            params: { status }
-        });
-        if (!data || data.length === 0) {
-            throw new Error("Không có dữ liệu để hiển thị");
-        }
-
-        console.log("fetch tasks: ", data);
-        return data;
+      const { data } = await api.get("/api/tasks", {
+        params: { status }
+      });
+  
+      console.log("fetch tasks: ", data);
+      return data;
     } catch (error) {
-        console.log("error ", error);
-        throw new Error(error?.response?.data?.error || "Đã có lỗi xảy ra khi tải dữ liệu");
+      console.log("error ", error);
+      throw new Error(error?.response?.data?.error || "Đã có lỗi xảy ra khi tải dữ liệu");
     }
-});
-
+  });  
 
 // Fetch user's tasks
 export const fetchUsersTasks = createAsyncThunk("task/fetchUsersTasks", async ({ status }) => {
@@ -80,17 +76,17 @@ export const updateTask = createAsyncThunk("task/updateTask", async ({ taskId, t
 });
 
 // Delete Task
-export const deleteTask = createAsyncThunk("task/deleteTask", async ({ taskId }) => {
+export const deleteTask = createAsyncThunk("task/deleteTask", async (taskId) => {
     setAuthHeader(localStorage.getItem("jwt"), api);
-
+  
     try {
-        const { data } = await api.delete(`/api/tasks/${taskId}`);
-        return { id: taskId, message: data };
+      const { data } = await api.delete(`/api/tasks/${taskId}`);
+      return { id: taskId, message: data };
     } catch (error) {
-        console.log("delete task error", error);
-        throw Error(error?.response?.data?.error || "An error occurred");
+      console.log("delete task error", error);
+      throw Error(error?.response?.data?.error || "An error occurred");
     }
-});
+  });  
 
 // Assign Task to User
 export const assignTaskToUser = createAsyncThunk("task/assignTaskToUser", async ({ taskId, userId }) => {
