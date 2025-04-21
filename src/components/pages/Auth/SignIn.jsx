@@ -5,7 +5,7 @@ import { login } from "../../../features/auth/AuthThunk";
 
 const SignIn = ({ togglePanel }) => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector(state => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
 
@@ -16,20 +16,20 @@ const SignIn = ({ togglePanel }) => {
     return newErrors;
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setErrors(prev => ({ ...prev, [name]: "" }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const errors = validate();
     if (Object.keys(errors).length > 0) {
       return setErrors(errors);
     }
-  
+
     setErrors({});
     try {
       const user = await dispatch(login(formData)).unwrap();
@@ -38,7 +38,6 @@ const SignIn = ({ togglePanel }) => {
       setErrors({ general: error });
     }
   };
-  
 
   return (
     <form onSubmit={handleSubmit}>
@@ -67,8 +66,8 @@ const SignIn = ({ togglePanel }) => {
         {errors.password && <p className="error-text">{errors.password}</p>}
       </div>
 
-      <button className="btn-submit" type="submit" disabled={loading}>
-        {loading ? <CircularProgress size={20} /> : "Sign In"}
+      <button className="btn-submit" type="submit">
+        Sign In
       </button>
 
       <p>

@@ -4,16 +4,25 @@ import { BASE_URL } from "../../api/api";
 import axios from "axios";
 
 // LOGIN
-export const login = createAsyncThunk("auth/login", async (userData) => {
+export const login = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
   try {
     const { data } = await axios.post(`${BASE_URL}/auth/signin`, userData);
-    localStorage.setItem("jwt", data.jwt); // Lưu JWT vào localStorage
-    return data;
+    localStorage.setItem("jwt", data.jwt);
+
+    const { data: userProfile } = await axios.get(`${BASE_URL}/api/users/profile`, {
+      headers: { Authorization: `Bearer ${data.jwt}` },
+    });
+
+    return {
+      jwt: data.jwt,
+      user: userProfile,
+    };
   } catch (error) {
     console.error("Login error:", error);
-    throw new Error(error.response?.data?.error || "Đăng nhập không thành công.");
+    return thunkAPI.rejectWithValue(error.response?.data?.error || "Đăng nhập không thành công.");
   }
 });
+
 
 // REGISTER
 export const register = createAsyncThunk("auth/register", async (userData) => {
