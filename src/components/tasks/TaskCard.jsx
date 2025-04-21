@@ -8,10 +8,12 @@ import { useDispatch } from "react-redux";
 import { deleteTask } from "../../features/task/TaskThunk";
 import { showNotification } from "../../features/notification/NotificationSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
 const role = "ROLE_ADMIN";
 
 const TaskCard = ({ task }) => {
+  const formattedDate = format(new Date(task.deadline), "dd/MM/yyyy HH:mm");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
@@ -50,16 +52,25 @@ const TaskCard = ({ task }) => {
   const [openUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
   const handleCloseUpdateTaskForm = () => {
     setOpenUpdateTaskForm(false);
-  
+
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.delete("taskId");
-  
+
     navigate(`${location.pathname}?${updatedParams.toString()}`);
   };
-  
+
+  const handleClearFilterParams = () => {
+    const updatedParams = new URLSearchParams(location.search);
+    updatedParams.delete("filter");
+    const queryString = updatedParams.toString();
+    const updatedUrl = queryString
+      ? `${location.pathname}?${queryString}`
+      : location.pathname;
+    navigate(updatedUrl);
+  };
+
   const handleOpenUpdateTaskModel = () => {
     const updatedParams = new URLSearchParams(location.search);
-
     setOpenUpdateTaskForm(true);
     updatedParams.set("taskId", task.id);
     navigate(`${location.pathname}?${updatedParams.toString()}`);
@@ -67,20 +78,26 @@ const TaskCard = ({ task }) => {
   };
 
   const handleDeleteTask = () => {
-    const confirmed = window.confirm("Are you sure you want to delete this task?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this task?"
+    );
     if (!confirmed) return;
-  
+
     dispatch(deleteTask(task.id));
-    dispatch(showNotification({ message: "Task deleted successfully!", type: "success" }));
+    dispatch(
+      showNotification({
+        message: "Task deleted successfully!",
+        type: "success",
+      })
+    );
     handleMenuClose();
   };
-  
 
   return (
     <div className="">
       <div className="card lg:flex justify-between">
-        <div className="lg:flex gap-5 items-center space-y-2 w-[90%] lg:w-[70%]">
-          <div className="">
+        <div className="lg:flex gap-5 items-start space-y-2 w-[90%] lg:w-[70%]">
+          <div className="flex-shrink-0">
             <img
               className="lg:w-[7rem] lg:h-[7rem] object-cover rounded-lg shadow-lg"
               src={task.image}
@@ -88,10 +105,16 @@ const TaskCard = ({ task }) => {
             />
           </div>
 
-          <div className="space-y-5">
+          <div className="flex-grow space-y-5">
             <div className="space-y-2">
               <h1 className="font-bold text-lg">{task.title}</h1>
               <p className="text-gray-500 text-sm">{task.description}</p>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <p className="taskCard__deadline">
+                Create At: {format(new Date(task.deadline), "dd/MM/yyyy HH:mm")}
+              </p>
             </div>
 
             <div className="flex flex-wrap gap-2 items-center">
@@ -140,10 +163,10 @@ const TaskCard = ({ task }) => {
                   >
                     See Submissions
                   </MenuItem>,
-                  <MenuItem key="edit" onClick={handleOpenUpdateTaskModel}  >
+                  <MenuItem key="edit" onClick={handleOpenUpdateTaskModel}>
                     Edit
                   </MenuItem>,
-                  <MenuItem key="delete" onClick={handleDeleteTask} >
+                  <MenuItem key="delete" onClick={handleDeleteTask}>
                     Delete
                   </MenuItem>,
                 ]
@@ -157,6 +180,7 @@ const TaskCard = ({ task }) => {
         handleClose={handleCloseSubmissionList}
       />
       <EditTaskForm
+        key={task.id}
         open={openUpdateTaskForm}
         handleClose={handleCloseUpdateTaskForm}
         initialData={task}

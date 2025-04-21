@@ -14,6 +14,7 @@ import { useState } from "react";
 import "./CreateTaskForm.css";
 import { useDispatch } from "react-redux";
 import { createTask } from "../../../features/task/TaskThunk";
+import { TAG_OPTIONS } from "../constants.js";
 
 export default function CreateTaskForm({ handleClose, open }) {
   const dispatch = useDispatch();
@@ -112,7 +113,7 @@ export default function CreateTaskForm({ handleClose, open }) {
               <Autocomplete
                 multiple
                 id="task-tags"
-                options={["Urgent", "Bug", "Feature", "Low Priority", "Improvement"]}
+                options={TAG_OPTIONS}
                 value={formData.tags}
                 onChange={handleTagChange}
                 getOptionLabel={(option) => option}

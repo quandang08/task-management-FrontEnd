@@ -15,6 +15,7 @@ import "./CreateTask/CreateTaskForm.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../../features/task/TaskThunk";
 import { toast } from "react-toastify";
+import { TAG_OPTIONS } from "./constants";
 
 export default function EditTaskForm({ open, handleClose, initialData }) {
   const dispatch = useDispatch();
@@ -30,35 +31,34 @@ export default function EditTaskForm({ open, handleClose, initialData }) {
 
   useEffect(() => {
     if (initialData) {
+      const allowedTags = TAG_OPTIONS;
+      
       setFormData({
         title: initialData.title || "",
         image: initialData.image || "",
         description: initialData.description || "",
-        tags: initialData.tags || [],
-        deadline: initialData.deadline
-          ? new Date(initialData.deadline)
-          : new Date(),
+        tags: (initialData.tags || []).filter((tag) => allowedTags.includes(tag)),
+        deadline: initialData.deadline ? new Date(initialData.deadline) : new Date(),
       });
     }
   }, [initialData]);
+  
 
   useEffect(() => {
-    if (task.taskDetails) {
-      setFormData({
-        ...task.taskDetails,
-        deadline: new Date(task.taskDetails.deadline),
-      });
-    }
-  }, [task.taskDetails]);
+    console.log("Initial data:", initialData);
+  }, [initialData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const limitedDescription = formData.description.split(' ').slice(0, 38).join(' ');
+  
     const payload = {
       ...formData,
+      description: limitedDescription,
       deadline: formData.deadline.toISOString(),
     };
-
+  
     try {
       await dispatch(
         updateTask({ taskId: initialData.id, taskData: payload })
@@ -71,7 +71,6 @@ export default function EditTaskForm({ open, handleClose, initialData }) {
     }
   };
   
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
