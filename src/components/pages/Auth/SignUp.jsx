@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useDispatch } from "react-redux";
+import { register } from "../../../features/auth/AuthThunk";
+ import { showNotification } from "../../../features/notification/NotificationSlice";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -9,7 +13,6 @@ const SignUp = () => {
     role: "ROLE_USER",
   });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const newErrors = {};
@@ -27,17 +30,26 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    setLoading(true);
-    setTimeout(() => {
-      console.log("Sign Up submitted:", formData);
-      setLoading(false);
-    }, 1500);
+    try {
+      await dispatch(register(formData)).unwrap();
+      
+      dispatch(showNotification({
+        type: "success",
+        message: "Đăng ký thành công. Vui lòng đăng nhập."
+      }));
+    } catch (error) {
+      dispatch(showNotification({
+        type: "error",
+        message: error.message || "Đăng ký không thành công."
+      }));
+    }
   };
 
   return (
@@ -87,12 +99,11 @@ const SignUp = () => {
           className="styled-select"
         >
           <option value="ROLE_CUSTOMER">ROLE_USER</option>
-          <option value="ROLE_ADMIN">ROLE_ADMIN</option>
         </select>
       </div>
 
-      <button className="btn-submit" type="submit" disabled={loading}>
-        {loading ? <CircularProgress size={20} /> : "Sign Up"}
+      <button className="btn-submit" type="submit">
+        Sign Up
       </button>
     </form>
   );
