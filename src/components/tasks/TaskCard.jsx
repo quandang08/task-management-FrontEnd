@@ -34,6 +34,9 @@ const TaskCard = ({ task }) => {
 
   const [openUserList, setOpenUserList] = useState(false);
   const handleOpenUserList = () => {
+    const updatedParams = new URLSearchParams(location.search);
+    updatedParams.set("taskId", task.id);
+    navigate(`${location.pathname}?${updatedParams.toString()}`);
     setOpenUserList(true);
     handleMenuClose();
   };
@@ -45,28 +48,21 @@ const TaskCard = ({ task }) => {
   };
 
   const handleOpenSubmissionList = () => {
+    const updatedParams = new URLSearchParams(location.search);
+    updatedParams.set("taskId", task.id);
+    navigate(`${location.pathname}?${updatedParams.toString()}`);
     setOpenSubmissionList(true);
     handleMenuClose();
   };
 
   const [openUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
+
   const handleCloseUpdateTaskForm = () => {
     setOpenUpdateTaskForm(false);
-
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.delete("taskId");
 
     navigate(`${location.pathname}?${updatedParams.toString()}`);
-  };
-
-  const handleClearFilterParams = () => {
-    const updatedParams = new URLSearchParams(location.search);
-    updatedParams.delete("filter");
-    const queryString = updatedParams.toString();
-    const updatedUrl = queryString
-      ? `${location.pathname}?${queryString}`
-      : location.pathname;
-    navigate(updatedUrl);
   };
 
   const handleOpenUpdateTaskModel = () => {
@@ -174,7 +170,7 @@ const TaskCard = ({ task }) => {
           </Menu>
         </div>
       </div>
-      <UserList open={openUserList} handleClose={handleCloseUserList} />
+      <UserList open={openUserList} handleClose={handleCloseUserList} taskId={task.id}/>
       <SubmissionsList
         open={openSubmissionList}
         handleClose={handleCloseSubmissionList}
