@@ -1,0 +1,61 @@
+.user-list-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  background-color: #fff;
+  border: 4px solid #000 !important;
+  box-shadow: 8px 8px 0 0 #000 !important;
+  padding: 2rem;
+}
+
+.user-list-item {
+  padding: 0.5rem 0;
+  border-radius: 0 !important;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #000 ;
+  box-shadow: 4px 4px 0 0 #000 ;
+  border-radius: 0 !important;
+}
+
+.user-name {
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #000;
+}
+
+.user-handle {
+  color: #555;
+  font-family: monospace;
+}
+
+.select-button {
+  border: 3px solid #000 !important;
+  color: #000 !important;
+  text-transform: uppercase !important;
+  font-weight: bold !important;
+  padding: 0.5rem 1rem !important;
+  min-width: 90px !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: 4px 4px 0 0 #000 !important;
+  transition: all 0.1s ease !important;
+}
+
+.select-button:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+  box-shadow: 2px 2px 0 0 #000 !important;
+  transform: translate(2px, 2px) !important;
+}
+
+/* Remove MUI's default button styles */
+.select-button::before,
+.select-button::after {
+  display: none !important;
+}

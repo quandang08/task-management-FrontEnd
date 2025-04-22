@@ -33,11 +33,11 @@ const TaskList = () => {
   return (
     <div className="space-y-5 w-[67%]">
       <div className="space-y-3">
-      {Array.isArray(tasks) && tasks.length > 0 ? (
-  tasks.map((task) => <TaskCard key={task.id} task={task} />)
-) : (
-  <div>No tasks available</div>
-)}
+        {Array.isArray(tasks) && tasks.length > 0 ? (
+          tasks.map((task) => <TaskCard key={task.id} task={task} />)
+        ) : (
+          <div>No tasks available</div>
+        )}
       </div>
     </div>
   );

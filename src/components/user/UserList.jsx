@@ -11,105 +11,95 @@ import {
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserList } from "../../features/auth/AuthThunk";
+import { assignTaskToUser } from "../../features/task/TaskThunk";
+import { showNotification } from "../../features/notification/NotificationSlice";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 450,
-  bgcolor: "#fff",
-  border: "4px solid #000",
-  boxShadow: "8px 8px 0 0 #000",
-  p: 4,
-};
+import "./UserList.css";
 
 export default function UserList({ handleClose, open }) {
   const dispatch = useDispatch();
   const { auth } = useSelector((store) => store);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Fetch the user list when the component mounts
+  const queryParams = new URLSearchParams(location.search);
+  const taskId = queryParams.get("taskId");
+
   React.useEffect(() => {
     dispatch(getUserList(localStorage.getItem("jwt")));
   }, [dispatch]);
 
+  const handleSelectUser = async (user) => {
+  try {
+    // 1. Gọi assign, unwrap để chờ hoàn thành
+    await dispatch(assignTaskToUser({ userId: user.id, taskId })).unwrap();
+
+    // 2. Hiển thị notification success
+    dispatch(showNotification({
+      type: "success",
+      message: `Đã giao task cho ${user.fullName} thành công`
+    }));
+
+    // 3. Xóa taskId khỏi URL để List component re‐fetch tasks
+    const params = new URLSearchParams(location.search);
+    params.delete("taskId");
+    navigate(`${location.pathname}?${params.toString()}`);
+
+    // 4. Đóng modal
+    handleClose();
+  } catch (error) {
+    // Nếu assign thất bại thì show error
+    dispatch(showNotification({
+      type: "error",
+      message: error || "Giao task thất bại"
+    }));
+  }
+};
+
+
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="brutalist-user-list-title"
-      aria-describedby="brutalist-user-list-description"
-    >
-      <Box sx={style}>
+    <Modal open={open} onClose={handleClose}>
+      <Box className="user-list-modal">
         <List>
-          {/* Check if auth.users is not empty */}
-          {auth.users && auth.users.length > 0 ? (
+          {auth.users?.length > 0 ? (
             auth.users.map((user, index) => (
-              <React.Fragment key={index}>
+              <React.Fragment key={user.id}>
                 <ListItem
+                  disableGutters
+                  className="user-list-item"
                   secondaryAction={
                     <Button
+                      onClick={() => handleSelectUser(user)}
                       variant="outlined"
-                      onClick={handleClose}
-                      sx={{
-                        border: "2px solid #000",
-                        color: "#000",
-                        textTransform: "uppercase",
-                        fontWeight: "bold",
-                        padding: "0.5rem 1rem",
-                        minWidth: "90px",
-                        borderRadius: 0,
-                        "&:hover": {
-                          backgroundColor: "#000",
-                          color: "#fff",
-                        },
-                      }}
+                      className="select-button"
                     >
                       Select
                     </Button>
                   }
-                  disableGutters
-                  sx={{
-                    paddingY: "0.5rem",
-                    borderRadius: 0,
-                  }}
                 >
                   <ListItemAvatar>
-                    <Avatar
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        border: "2px solid #000",
-                        boxShadow: "4px 4px 0 0 #000",
-                        borderRadius: 0,
-                      }}
-                    />
+                    <Avatar className="user-avatar" />
                   </ListItemAvatar>
                   <ListItemText
                     primary={
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          textTransform: "uppercase",
-                          borderBottom: "2px solid #000",
-                        }}
-                      >
+                      <span className="user-name">
                         {user.fullName || "Unknown User"}
                       </span>
                     }
                     secondary={
-                      <span style={{ color: "#555", fontFamily: "monospace" }}>
+                      <span className="user-handle">
                         @
                         {user.fullName
                           ? user.fullName.split(" ").join("_").toLowerCase()
-                          : "unknown_user"}{" "}
+                          : "unknown_user"}
                       </span>
                     }
                   />
                 </ListItem>
                 {index !== auth.users.length - 1 && (
-                  <Divider sx={{ borderColor: "#000" }} /> 
+                  <Divider sx={{ borderColor: "#000" }} />
                 )}
               </React.Fragment>
             ))
