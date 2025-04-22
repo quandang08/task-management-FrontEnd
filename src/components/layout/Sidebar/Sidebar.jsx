@@ -22,13 +22,13 @@ const menu = [
     name: "HomePage",
     icon: <Home />,
     value: "HomePage",
-    role: ["ROLE_ADMIN", "ROLE_CUSTOMER"],
+    role: ["ROLE_ADMIN", "ROLE_USER"],
   },
   {
     name: "DONE",
     icon: <CheckCircle />,
     value: "DONE",
-    role: ["ROLE_ADMIN", "ROLE_CUSTOMER"],
+    role: ["ROLE_ADMIN", "ROLE_USER"],
   },
   {
     name: "ASSIGNED",
@@ -52,7 +52,7 @@ const menu = [
     name: "Notification",
     icon: <Notifications />,
     value: "NOTIFICATION",
-    role: ["ROLE_ADMIN", "ROLE_CUSTOMER"],
+    role: ["ROLE_ADMIN", "ROLE_USER"],
   },
 ];
 
