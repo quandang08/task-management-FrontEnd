@@ -33,31 +33,25 @@ export default function UserList({ handleClose, open }) {
 
   const handleSelectUser = async (user) => {
   try {
-    // 1. Gọi assign, unwrap để chờ hoàn thành
     await dispatch(assignTaskToUser({ userId: user.id, taskId })).unwrap();
 
-    // 2. Hiển thị notification success
     dispatch(showNotification({
       type: "success",
       message: `Đã giao task cho ${user.fullName} thành công`
     }));
 
-    // 3. Xóa taskId khỏi URL để List component re‐fetch tasks
     const params = new URLSearchParams(location.search);
     params.delete("taskId");
     navigate(`${location.pathname}?${params.toString()}`);
 
-    // 4. Đóng modal
     handleClose();
   } catch (error) {
-    // Nếu assign thất bại thì show error
     dispatch(showNotification({
       type: "error",
       message: error || "Giao task thất bại"
     }));
   }
 };
-
 
   return (
     <Modal open={open} onClose={handleClose}>

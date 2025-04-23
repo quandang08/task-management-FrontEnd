@@ -4,21 +4,29 @@ import React, { useState } from "react";
 import UserList from "../user/UserList";
 import SubmissionsList from "./SubmissionList";
 import EditTaskForm from "./EditTaskForm";
-import { useDispatch } from "react-redux";
-import { deleteTask } from "../../features/task/TaskThunk";
+import { useDispatch, useSelector } from "react-redux";
+import { completeTask, deleteTask } from "../../features/task/TaskThunk";
 import { showNotification } from "../../features/notification/NotificationSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-
-const role = "ROLE_ADMIN";
+import SubmitFormModel from "./SubmitFormModel";
 
 const TaskCard = ({ task }) => {
   const formattedDate = format(new Date(task.deadline), "dd/MM/yyyy HH:mm");
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { auth } = useSelector((store) => store);
+
+  const role = auth.user?.role || "";
+  const isAdmin = role === "ROLE_ADMIN";
+
+  const [openUserList, setOpenUserList] = useState(false);
+  const [openSubmissionList, setOpenSubmissionList] = useState(false);
+  const [openUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
+  const [openSubmitFormModel, setOpenSubmitFormModel] = useState(false);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,11 +36,6 @@ const TaskCard = ({ task }) => {
     setAnchorEl(null);
   };
 
-  const handleCloseUserList = () => {
-    setOpenUserList(false);
-  };
-
-  const [openUserList, setOpenUserList] = useState(false);
   const handleOpenUserList = () => {
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.set("taskId", task.id);
@@ -41,10 +44,8 @@ const TaskCard = ({ task }) => {
     handleMenuClose();
   };
 
-  const [openSubmissionList, setOpenSubmissionList] = useState(false);
-  const handleCloseSubmissionList = () => {
-    setOpenSubmissionList(false);
-    handleMenuClose();
+  const handleCloseUserList = () => {
+    setOpenUserList(false);
   };
 
   const handleOpenSubmissionList = () => {
@@ -55,22 +56,23 @@ const TaskCard = ({ task }) => {
     handleMenuClose();
   };
 
-  const [openUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
+  const handleCloseSubmissionList = () => {
+    setOpenSubmissionList(false);
+  };
+
+  const handleOpenUpdateTaskModel = () => {
+    const updatedParams = new URLSearchParams(location.search);
+    updatedParams.set("taskId", task.id);
+    navigate(`${location.pathname}?${updatedParams.toString()}`);
+    setOpenUpdateTaskForm(true);
+    handleMenuClose();
+  };
 
   const handleCloseUpdateTaskForm = () => {
     setOpenUpdateTaskForm(false);
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.delete("taskId");
-
     navigate(`${location.pathname}?${updatedParams.toString()}`);
-  };
-
-  const handleOpenUpdateTaskModel = () => {
-    const updatedParams = new URLSearchParams(location.search);
-    setOpenUpdateTaskForm(true);
-    updatedParams.set("taskId", task.id);
-    navigate(`${location.pathname}?${updatedParams.toString()}`);
-    handleMenuClose();
   };
 
   const handleDeleteTask = () => {
@@ -89,8 +91,42 @@ const TaskCard = ({ task }) => {
     handleMenuClose();
   };
 
+  const handleOpenSubmitFormModel = () => {
+    const updatedParams = new URLSearchParams(location.search);
+    updatedParams.set("taskId", task.id);
+    navigate(`${location.pathname}?${updatedParams.toString()}`);
+    setOpenSubmitFormModel(true);
+    handleMenuClose();
+  };
+
+  const handleCloseSubmitFormModel = () => {
+    setOpenSubmitFormModel(false);
+  };
+
+  //Update status task of role USER
+  const handleMarkTaskAsDone = () => {
+    // Gọi action completeTask để cập nhật trạng thái task
+    dispatch(completeTask({ taskId: task.id }))
+      .then(() => {
+        dispatch(
+          showNotification({
+            message: "Task marked as done successfully!",
+            type: "success",
+          })
+        );
+      })
+      .catch((error) => {
+        dispatch(
+          showNotification({
+            message: `Failed to mark task as done: ${error.message}`,
+            type: "error",
+          })
+        );
+      });
+  };
+
   return (
-    <div className="">
+    <div>
       <div className="card lg:flex justify-between">
         <div className="lg:flex gap-5 items-start space-y-2 w-[90%] lg:w-[70%]">
           <div className="flex-shrink-0">
@@ -108,8 +144,17 @@ const TaskCard = ({ task }) => {
             </div>
 
             <div className="flex justify-between items-center">
-              <p className="taskCard__deadline">
-                Create At: {format(new Date(task.deadline), "dd/MM/yyyy HH:mm")}
+              <p className="taskCard__deadline">Create At: {formattedDate}</p>
+              <p
+                className={`font-semibold px-3 py-1 rounded-full text-sm ${
+                  task.status === "COMPLETED"
+                    ? "bg-green-100 text-green-700"
+                    : task.status === "PENDING"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+              >
+                {task.status}
               </p>
             </div>
 
@@ -124,53 +169,42 @@ const TaskCard = ({ task }) => {
         </div>
 
         <div>
-          <IconButton
-            id="demo-positioned-button"
-            aria-controls={open ? "demo-positioned-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleMenuClick}
-          >
+          <IconButton onClick={handleMenuClick}>
             <MoreHorizIcon />
           </IconButton>
 
           <Menu
-            id="demo-positioned-menu"
             anchorEl={anchorEl}
             open={open}
             onClose={handleMenuClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
+            anchorOrigin={{ vertical: "top", horizontal: "left" }}
+            transformOrigin={{ vertical: "top", horizontal: "left" }}
           >
-            {role === "ROLE_ADMIN"
-              ? [
-                  <MenuItem key="user" onClick={handleOpenUserList}>
-                    Assigned User
-                  </MenuItem>,
-                  <MenuItem
-                    key="submissions"
-                    onClick={handleOpenSubmissionList}
-                  >
-                    See Submissions
-                  </MenuItem>,
-                  <MenuItem key="edit" onClick={handleOpenUpdateTaskModel}>
-                    Edit
-                  </MenuItem>,
-                  <MenuItem key="delete" onClick={handleDeleteTask}>
-                    Delete
-                  </MenuItem>,
-                ]
-              : null}
+            {isAdmin ? (
+              <div>
+                <MenuItem onClick={handleOpenUserList}>Assigned User</MenuItem>
+                <MenuItem onClick={handleOpenSubmissionList}>
+                  See Submissions
+                </MenuItem>
+                <MenuItem onClick={handleOpenUpdateTaskModel}>Edit</MenuItem>
+                <MenuItem onClick={handleDeleteTask}>Delete</MenuItem>
+              </div>
+            ) : (
+              <div>
+                <MenuItem onClick={handleOpenSubmitFormModel}>Submit</MenuItem>
+                <MenuItem onClick={handleMarkTaskAsDone}>Mark as Done</MenuItem>
+                <MenuItem onClick={handleMarkTaskAsDone}>Mark as Assigned</MenuItem>
+              </div>
+            )}
           </Menu>
         </div>
       </div>
-      <UserList open={openUserList} handleClose={handleCloseUserList} taskId={task.id}/>
+
+      <UserList
+        open={openUserList}
+        handleClose={handleCloseUserList}
+        taskId={task.id}
+      />
       <SubmissionsList
         open={openSubmissionList}
         handleClose={handleCloseSubmissionList}
@@ -180,6 +214,10 @@ const TaskCard = ({ task }) => {
         open={openUpdateTaskForm}
         handleClose={handleCloseUpdateTaskForm}
         initialData={task}
+      />
+      <SubmitFormModel
+        open={openSubmitFormModel}
+        handleClose={handleCloseSubmitFormModel}
       />
     </div>
   );
