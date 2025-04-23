@@ -15,6 +15,7 @@ import "./CreateTaskForm.css";
 import { useDispatch } from "react-redux";
 import { createTask } from "../../../features/task/TaskThunk";
 import { TAG_OPTIONS } from "../constants.js";
+import { showNotification } from "../../../features/notification/NotificationSlice.js";
 
 export default function CreateTaskForm({ handleClose, open }) {
   const dispatch = useDispatch();
@@ -49,16 +50,41 @@ export default function CreateTaskForm({ handleClose, open }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       ...formData,
-      deadline: formData.deadline.toISOString(), 
+      deadline: formData.deadline.toISOString(),
     };
-    console.log("Payload gửi lên:", payload);
-    dispatch(createTask(formData));
-    handleClose();
+
+    try {
+      await dispatch(createTask(payload)).unwrap();
+
+      dispatch(
+        showNotification({
+          type: "success",
+          message: "Tạo task thành công!",
+        })
+      );
+
+      setFormData({
+        title: "",
+        image: "",
+        description: "",
+        tags: [],
+        deadline: new Date(),
+      });
+
+      handleClose();
+    } catch (error) {
+      dispatch(
+        showNotification({
+          type: "error",
+          message: error?.message || "Tạo task thất bại!",
+        })
+      );
+    }
   };
 
   return (
