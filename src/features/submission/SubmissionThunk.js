@@ -2,25 +2,29 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, setAuthHeader } from "../../api/api";
 
 export const submitTask = createAsyncThunk("submissions/submitTask",
-    async({taskId,githubLink})=>{
-        setAuthHeader(localStorage.getItem("jwt"))
+  async ({ taskId, githubLink }) => {
+    setAuthHeader(localStorage.getItem("jwt"), api);
 
-        try {
-            const data = await api.post(`/api/submissions?task_id=${taskId}&github_link=${githubLink}`, {});
-            console.log("submission task");
-            return data;
-        } catch (error) {
-            console.log("error", error);
-            throw new Error(error.response.data.error);
-        }
+    try {
+      const response = await api.post("/api/submissions", {
+        taskId,
+        githubLink,
+      });
+      console.log("Submission success", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Submission error", error);
+      throw new Error(error?.response?.data?.error || "Submit failed");
     }
-)
+  }
+);
+
 
 export const fetchAllSubmissions = createAsyncThunk("submissions/fetchAllSubmissions",
     async ()=>{ 
         setAuthHeader(localStorage.getItem("jwt"))
         try {
-            const { data } = await api.get(`/api/submissions`, {});
+            const { data } = await api.get(`/api/submissions`);
             console.log("submission task");
             return data;
         } catch (error) {
@@ -33,7 +37,7 @@ export const fetchAllSubmissions = createAsyncThunk("submissions/fetchAllSubmiss
 export const fetchSubmissionByTaskId = createAsyncThunk(
     "submissions/fetchSubmissionByTaskId",
     async (taskId) => {
-      setAuthHeader(localStorage.getItem("jwt"));
+      setAuthHeader(localStorage.getItem("jwt"), api);
       try {
         const { data } = await api.get(`/api/submissions/task/${taskId}`);
         console.log("Fetched task submissions");
