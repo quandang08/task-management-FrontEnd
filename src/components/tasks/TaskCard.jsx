@@ -2,7 +2,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import React, { useState } from "react";
 import UserList from "../user/UserList";
-import SubmissionsList from "./SubmissionList";
+import SubmissionsList from "./Submission/SubmissionList";
 import EditTaskForm from "./EditTaskForm";
 import { useDispatch, useSelector } from "react-redux";
 import { completeTask, deleteTask } from "../../features/task/TaskThunk";
@@ -10,6 +10,7 @@ import { showNotification } from "../../features/notification/NotificationSlice"
 import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import SubmitFormModel from "./SubmitFormModel";
+import { fetchSubmissionByTaskId } from "../../features/submission/SubmissionThunk";
 
 const TaskCard = ({ task }) => {
   const formattedDate = format(new Date(task.deadline), "dd/MM/yyyy HH:mm");
@@ -36,6 +37,7 @@ const TaskCard = ({ task }) => {
     setAnchorEl(null);
   };
 
+  //user list
   const handleOpenUserList = () => {
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.set("taskId", task.id);
@@ -48,6 +50,7 @@ const TaskCard = ({ task }) => {
     setOpenUserList(false);
   };
 
+  //submission list
   const handleOpenSubmissionList = () => {
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.set("taskId", task.id);
@@ -60,6 +63,7 @@ const TaskCard = ({ task }) => {
     setOpenSubmissionList(false);
   };
 
+  //update
   const handleOpenUpdateTaskModel = () => {
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.set("taskId", task.id);
@@ -75,6 +79,7 @@ const TaskCard = ({ task }) => {
     navigate(`${location.pathname}?${updatedParams.toString()}`);
   };
 
+  //delete
   const handleDeleteTask = () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this task?"
@@ -91,6 +96,7 @@ const TaskCard = ({ task }) => {
     handleMenuClose();
   };
 
+  //submit
   const handleOpenSubmitFormModel = () => {
     const updatedParams = new URLSearchParams(location.search);
     updatedParams.set("taskId", task.id);
@@ -105,7 +111,6 @@ const TaskCard = ({ task }) => {
 
   //Update status task of role USER
   const handleMarkTaskAsDone = () => {
-    // Gọi action completeTask để cập nhật trạng thái task
     dispatch(completeTask({ taskId: task.id }))
       .then(() => {
         dispatch(
@@ -123,6 +128,12 @@ const TaskCard = ({ task }) => {
           })
         );
       });
+  };
+
+  //View Task Details
+  const handleOpenTaskDetails = () => {
+    // Logic to view task details
+    console.log("Viewing details for task:", task.id);
   };
 
   return (
@@ -182,6 +193,9 @@ const TaskCard = ({ task }) => {
           >
             {isAdmin ? (
               <div>
+                <MenuItem onClick={handleOpenTaskDetails}>
+                  View Details
+                </MenuItem>
                 <MenuItem onClick={handleOpenUserList}>Assigned User</MenuItem>
                 <MenuItem onClick={handleOpenSubmissionList}>
                   See Submissions
@@ -193,7 +207,9 @@ const TaskCard = ({ task }) => {
               <div>
                 <MenuItem onClick={handleOpenSubmitFormModel}>Submit</MenuItem>
                 <MenuItem onClick={handleMarkTaskAsDone}>Mark as Done</MenuItem>
-                <MenuItem onClick={handleMarkTaskAsDone}>Mark as Assigned</MenuItem>
+                {/* <MenuItem onClick={handleMarkTaskAsDone}>
+                  Mark as Assigned
+                </MenuItem> */}
               </div>
             )}
           </Menu>
@@ -218,6 +234,10 @@ const TaskCard = ({ task }) => {
       <SubmitFormModel
         open={openSubmitFormModel}
         handleClose={handleCloseSubmitFormModel}
+        taskId={task.id}
+        onSuccess={() => {
+          dispatch(fetchSubmissionByTaskId(task.id));
+        }}
       />
     </div>
   );

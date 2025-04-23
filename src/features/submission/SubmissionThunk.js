@@ -19,7 +19,6 @@ export const submitTask = createAsyncThunk("submissions/submitTask",
   }
 );
 
-
 export const fetchAllSubmissions = createAsyncThunk("submissions/fetchAllSubmissions",
     async ()=>{ 
         setAuthHeader(localStorage.getItem("jwt"))
