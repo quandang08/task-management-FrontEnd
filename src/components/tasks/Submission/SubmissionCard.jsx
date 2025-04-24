@@ -7,7 +7,6 @@ import "./SubmissionCard.css";
 import { useDispatch } from "react-redux";
 import { acceptOrDeclineSubmission } from "../../../features/submission/SubmissionThunk";
 
-
 const SubmissionCard = ({ item }) => {
   const dispatch = useDispatch();
   const [localStatus, setLocalStatus] = useState(item.status);
@@ -24,7 +23,7 @@ const SubmissionCard = ({ item }) => {
   };
 
   const isFinalized =
-    localStatus === "ACCEPTED" || localStatus === "DECLINED";
+    localStatus === "ACCEPTED" || localStatus === "REJECTED";
 
   const formatDateTime = (rawDate) => {
     if (!rawDate) return "N/A";
@@ -47,7 +46,7 @@ const SubmissionCard = ({ item }) => {
           ✅ Accepted
         </span>
       );
-    if (localStatus === "DECLINED")
+    if (localStatus === "REJECTED")
       return (
         <span className="inline-block px-2 py-1 text-red-700 bg-red-100 rounded">
           ❌ Declined
@@ -90,7 +89,7 @@ const SubmissionCard = ({ item }) => {
               Accept
             </button>
             <button
-              onClick={() => handleAcceptDecline("DECLINED")}
+              onClick={() => handleAcceptDecline("REJECTED")}
               className="flex items-center px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
             >
               <CloseIcon fontSize="small" className="mr-1" />
