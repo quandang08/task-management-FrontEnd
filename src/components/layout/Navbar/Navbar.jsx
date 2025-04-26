@@ -1,14 +1,27 @@
 import React from "react";
 import { Avatar } from "@mui/material";
-import { Search, Notifications, ArrowDropDown } from "@mui/icons-material";
+import {
+  Menu,
+  Search,
+  Notifications,
+  ArrowDropDown,
+} from "@mui/icons-material";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
   const { task, auth } = useSelector((store) => store);
 
   return (
     <nav className="navbar">
+      <button
+        className="hamburger-btn lg:hidden"
+        onClick={onMenuClick}
+        aria-label="Toggle sidebar"
+      >
+        <Menu fontSize="large" />
+      </button>
+
       {/* Left Section: Brand */}
       <div className="navbar-left">
         <h1 className="brand-title">AMU TASK MANAGER</h1>

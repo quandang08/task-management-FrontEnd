@@ -31,13 +31,15 @@ const TaskList = () => {
   }
 
   return (
-    <div className="space-y-5 w-[67%]">
-      <div className="space-y-3">
-        {Array.isArray(tasks) && tasks.length > 0 ? (
-          tasks.map((task) => <TaskCard key={task.id} task={task} />)
-        ) : (
-          <div>No tasks available</div>
-        )}
+    <div className="flex justify-center px-4 sm:px-6 md:px-8">
+      <div className="space-y-5 w-full lg:w-2/3">
+        <div className="space-y-3">
+          {Array.isArray(tasks) && tasks.length > 0 ? (
+            tasks.map((task) => <TaskCard key={task.id} task={task} />)
+          ) : (
+            <div>No tasks available</div>
+          )}
+        </div>
       </div>
     </div>
   );

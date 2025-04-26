@@ -58,11 +58,10 @@ const menu = [
 
 const role = "ROLE_ADMIN";
 
-const Sidebar = () => {
+const Sidebar = ({ className = "", onClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const [activeMenu, setActiveMenu] = useState("HomePage");
   const [darkMode, setDarkMode] = useState(false);
@@ -84,9 +83,9 @@ const Sidebar = () => {
       return;
     }
     if (activeMenu === item.value) return;
-  
+
     const updatedParams = new URLSearchParams(location.search);
-  
+
     if (item.value === "HomePage") {
       updatedParams.delete("filter");
       navigate(`${location.pathname}?${updatedParams.toString()}`);
@@ -94,10 +93,9 @@ const Sidebar = () => {
       updatedParams.set("filter", item.value);
       navigate(`${location.pathname}?${updatedParams.toString()}`);
     }
-  
+
     setActiveMenu(item.value);
   };
-  
 
   const handleCloseCreateTaskForm = () => {
     setOpenCreateTaskForm(false);
@@ -106,7 +104,7 @@ const Sidebar = () => {
   const handleLogout = async () => {
     const confirm = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
     if (!confirm) return;
-  
+
     try {
       await dispatch(logout());
       navigate("/auth");
@@ -115,22 +113,23 @@ const Sidebar = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setCollapsed(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <div
         className={`sidebar ${darkMode ? "dark" : "light"} ${
           collapsed ? "collapsed" : ""
-        } flex flex-col justify-between`}
+        } ${className} flex flex-col justify-between`}
       >
         <div>
-          <div className="flex justify-center mt-6 mb-6">
-            {!collapsed && (
-              <div className="text-2xl font-black uppercase tracking-wide text-center">
-                Task Manager Amu
-              </div>
-            )}
-          </div>
-
           {/* Menu Items */}
           <div className="flex flex-col gap-3 mt-8">
             {menu
