@@ -13,7 +13,7 @@ import {
 import "./Sidebar.css";
 import CreateTaskForm from "../../tasks/CreateTask/CreateTaskForm";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../features/auth/AuthThunk";
 
@@ -129,6 +129,17 @@ const Sidebar = ({ className = "", onClose }) => {
           collapsed ? "collapsed" : ""
         } ${className} flex flex-col justify-between`}
       >
+        <div className="flex flex-col items-center mt-4">
+          <Link to="/">
+            <img
+              src="/logo-2.png"
+              alt="Logo"
+              className={`w-20 h-20 object-contain ${
+                collapsed ? "w-10 h-10" : ""
+              }`}
+            />
+          </Link>
+        </div>
         <div>
           {/* Menu Items */}
           <div className="flex flex-col gap-3 mt-8">

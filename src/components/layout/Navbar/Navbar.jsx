@@ -8,9 +8,15 @@ import {
 } from "@mui/icons-material";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"; // thêm cái này
 
 const Navbar = ({ onMenuClick }) => {
   const { task, auth } = useSelector((store) => store);
+  const navigate = useNavigate(); // hook chuyển trang
+
+  const handleAvatarClick = () => {
+    navigate("/profile"); // chuyển tới đường dẫn Profile
+  };
 
   return (
     <nav className="navbar">
@@ -52,6 +58,8 @@ const Navbar = ({ onMenuClick }) => {
           sx={{ width: 40, height: 40 }}
           src="https://i.pravatar.cc/80"
           alt="User"
+          onClick={handleAvatarClick} // thêm sự kiện click
+          style={{ cursor: "pointer" }} // icon có tay trỏ
         />
         <ArrowDropDown className="icon" />
       </div>
