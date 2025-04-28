@@ -41,7 +41,7 @@ export const register = createAsyncThunk("auth/register", async (userData) => {
 // LOGOUT
 export const logout = createAsyncThunk("auth/logout", async () => {
   try {
-    localStorage.removeItem("jwt"); // Xóa JWT khỏi localStorage
+    localStorage.removeItem("jwt");
   } catch (error) {
     console.error("Logout error:", error);
     throw new Error("Lỗi khi đăng xuất.");
@@ -50,7 +50,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 
 // GET USER PROFILE
 export const getUserProfile = createAsyncThunk("auth/getUserProfile", async (jwt) => {
-  setAuthHeader(jwt, api); // Thiết lập header với JWT
+  setAuthHeader(jwt, api);
   try {
     const { data } = await api.get("/api/users/profile");
     return data;
@@ -62,7 +62,7 @@ export const getUserProfile = createAsyncThunk("auth/getUserProfile", async (jwt
 
 // GET USER LIST
 export const getUserList = createAsyncThunk("auth/getUserList", async (jwt) => {
-  setAuthHeader(jwt, api); // Thiết lập header với JWT
+  setAuthHeader(jwt, api);
   try {
     const { data } = await api.get("/api/users");
     return data;
