@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import { Avatar } from "@mui/material";
-import { Menu, Search, Notifications, ArrowDropDown } from "@mui/icons-material";
+import {
+  Menu,
+  Search,
+  Notifications,
+  ArrowDropDown,
+} from "@mui/icons-material";
 import "./Navbar.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +19,6 @@ const Navbar = ({ onMenuClick }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Khi navbar mount, nếu đã login thì fetch luôn userDetails
   useEffect(() => {
     if (auth.user) {
       dispatch(fetchUserDetails({ userId: auth.user.id }));
@@ -25,7 +29,6 @@ const Navbar = ({ onMenuClick }) => {
     navigate("/profile");
   };
 
-  // Dùng avatarUrl từ userDetails, fallback về gravatar hoặc mặc định nếu chưa có
   const avatarSrc = userDetails?.avatarUrl || "https://i.pravatar.cc/80";
 
   return (
