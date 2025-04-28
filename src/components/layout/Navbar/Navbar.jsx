@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar } from "@mui/material";
-import {
-  Menu,
-  Search,
-  Notifications,
-  ArrowDropDown,
-} from "@mui/icons-material";
+import { Menu, Search, Notifications, ArrowDropDown } from "@mui/icons-material";
 import "./Navbar.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchUserDetails } from "../../../features/user/UserThunk";
 
 const Navbar = ({ onMenuClick }) => {
-  const { task, auth } = useSelector((store) => store);
+  const { auth, userDetails } = useSelector((store) => ({
+    auth: store.auth,
+    userDetails: store.userDetails.userDetails,
+  }));
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Khi navbar mount, nếu đã login thì fetch luôn userDetails
+  useEffect(() => {
+    if (auth.user) {
+      dispatch(fetchUserDetails({ userId: auth.user.id }));
+    }
+  }, [auth.user, dispatch]);
 
   const handleAvatarClick = () => {
     navigate("/profile");
   };
+
+  // Dùng avatarUrl từ userDetails, fallback về gravatar hoặc mặc định nếu chưa có
+  const avatarSrc = userDetails?.avatarUrl || "https://i.pravatar.cc/80";
 
   return (
     <nav className="navbar">
@@ -56,8 +66,8 @@ const Navbar = ({ onMenuClick }) => {
         <Avatar
           className="user-avatar"
           sx={{ width: 40, height: 40 }}
-          src="https://i.pravatar.cc/80"
-          alt="User"
+          src={avatarSrc}
+          alt={auth.user?.fullName || "User"}
           onClick={handleAvatarClick}
           style={{ cursor: "pointer" }}
         />
