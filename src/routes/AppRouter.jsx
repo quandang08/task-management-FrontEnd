@@ -14,14 +14,18 @@ const AppRouter = () => {
         path="/"
         element={user ? <HomePage /> : <Navigate to="/auth" replace />}
       />
-
       <Route
         path="/auth"
         element={!user ? <Auth /> : <Navigate to="/" replace />}
       />
 
+      <Route path="/profile/:userId" element={<Profile />} />
+
+      <Route path="/profile" element={
+          user ? <Navigate to={`/profile/${user.id}`} replace /> : <Navigate to="/auth" replace />
+      } />
+
       <Route path="*" element={<NotFound />} />
-      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 };

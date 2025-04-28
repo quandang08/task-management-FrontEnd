@@ -1,8 +1,13 @@
 import React from "react";
 import { Briefcase, Building, MapPin, Mail, Users, CheckSquare, Link } from "lucide-react";
 import { Button } from "../Button/Button";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Profile() {
+  const { userId } = useParams();
+  console.log(userId);
+
   const user = {
     name: "Đặng Anh Quân",
     email: "22211tt1369@mail.tdc.edu.vn",
